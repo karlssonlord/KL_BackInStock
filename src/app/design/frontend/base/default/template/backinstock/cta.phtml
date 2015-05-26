@@ -104,8 +104,11 @@
                 method:'get',
                 onSuccess: function(response) {
                     console.log(response.responseText);
-                    BackInStock.link().update('You will be notified once this product is back in stock.');
-                    BackInStock.link().disable();
+                    BackInStock.link().update('You will be notified once this product is back in stock!');
+                    BackInStock.link().setStyle({
+                        'pointer-events': 'none',
+                        'cursor': 'default'
+                    });
                     Event.fire('productAlertWasStored', response);
                 },
                 onFailure: function(response) {
