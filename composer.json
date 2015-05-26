@@ -1,0 +1,47 @@
+{
+    "name": "karlssonlord/back-in-stock",
+    "type": "magento-module",
+    "description": "More complete solution for handling stock notifications on the frontend",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "2.1.1",
+        "magento/core": "~1.9"
+    },
+    "require-dev": {
+        "MageTest/Manager": "~1.0",
+        "laracasts/integrated": "^0.15.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Wickström",
+            "email": "davidwickstrom@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:dwickstrom/Manager.git"
+        }
+    ],
+    "extra":{
+        "magento-root-dir": "src/",
+        "magento-deploystrategy": "symlink",
+        "auto-append-gitignore": true
+    },
+    "autoload": {
+        "psr-0": {
+            "": [
+                "src/app",
+                "src/app/code/local",
+                "src/app/code/community",
+                "src/app/code/core",
+                "src/lib"
+            ]
+        },
+        "classmap": ["tests/", "build/"]
+    }
+}

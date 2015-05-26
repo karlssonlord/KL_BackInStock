@@ -1,0 +1,118 @@
+<style>
+    .back-stock-modal-controller, .back-in-stock-subscribe{
+        cursor: pointer;
+    }
+</style>
+
+<script>
+
+    var BackInStock = {
+
+        sizes: '',
+
+        modal: function() {
+            return $('back-in-stock-modal');
+        },
+
+        form: function() {
+            return $('back-in-stock-form')
+        },
+
+        button: function() {
+            return $('subscribe-to-stock-notification');
+        },
+
+        controller: function() {
+            return $('back-stock-modal-controller');
+        },
+
+        link: function() {
+            return $('back-in-stock-subscribe');
+        },
+
+        someTimeSoon: function(data) {
+            this.sizes = data;
+        },
+
+        buildSelect: function() {
+            var select = document.createElement('select');
+            select.setAttribute('id', 'children-out-of-stock');
+            var option;
+            $(this.sizes).each(function(item) {
+                option = document.createElement('option');
+                option.value = item.link;
+                option.textContent = item.name;
+                select.appendChild(option);
+            });
+            return select;
+        }
+
+    };
+
+</script>
+
+<?php if ($this->isConfigurable() && !$this->allSizesInStock()): ?>
+
+    <a id="back-stock-modal-controller"><?php echo $this->__('Your size is out of stock?') ?></a>
+
+    <script>
+        document.observe('dom:loaded', function() {
+            BackInStock.someTimeSoon(<?php echo json_encode($this->getOutOfStockLinks()) ?>);
+            BackInStock.controller().observe('click', function() {
+                var selectWrap = $('missing-children');
+                if (selectWrap.innerHTML.length == 0) {
+                    selectWrap.insert(BackInStock.buildSelect());
+                }
+                BackInStock.modal().toggle();
+            });
+
+            BackInStock.form().observe('submit', function (event) {
+                event.preventDefault();
+                BackInStock.button().update('<?php echo $this->__('Wait...') ?>');
+                BackInStock.form().request({
+                    onFailure: function(response) {
+                        BackInStock.button().update('<?php echo $this->__('Try again?') ?>');
+                        Event.fire('savingProductAlertFailed', response)
+                    },
+                    onSuccess: function(response) {
+                        BackInStock.button().update('<?php echo $this->__('Thank you') ?>');
+                        BackInStock.button().disable();
+                        Event.fire('productAlertWasStored', response)
+                    }
+                });
+            });
+        });
+    </script>
+
+<?php endif; ?>
+
+<?php if ($this->isSimple() && !$this->isSalable() && !Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+
+    <a id="back-stock-modal-controller"><?php echo $this->__('Notify me when this product is back in stock') ?></a>
+
+<?php endif; ?>
+
+<?php if ($this->isSimple() && !$this->isSalable() && Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+
+    <a data-url="<?php echo $this->generateStockNotificationLink($this->getProduct()) ?>" id="back-in-stock-subscribe"><?php echo $this->__('Notify me when this product is back in stock') ?></a>
+
+    <script>
+        BackInStock.link().observe('click', function(event) {
+            event.preventDefault();
+            console.log($(this).readAttribute('data-url'));
+            new Ajax.Request($(this).readAttribute('data-url'), {
+                method:'get',
+                onSuccess: function(response) {
+                    console.log(response.responseText);
+                    BackInStock.link().update('You will be notified once this product is back in stock.');
+                    Event.fire('productAlertWasStored', response);
+                },
+                onFailure: function(response) {
+                    console.log(response.responseText);
+                    Event.fire('savingProductAlertFailed', response);
+                }
+            });
+        });
+    </script>
+
+<?php endif; ?>

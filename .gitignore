@@ -1,0 +1,5 @@
+/src/*
+!/src/app/code/community/KL/*
+!/src/app/etc/KL_BackInStock.xml
+!/src/app/design/frontend/kl/*
+vendor

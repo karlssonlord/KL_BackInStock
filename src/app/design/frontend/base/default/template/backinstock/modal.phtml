@@ -1,0 +1,28 @@
+<div id="back-in-stock-modal" style="display:none; width: 100%; padding: 40px;">
+
+    <form id="back-in-stock-form" method="POST" action="<?php echo $this->getSubscribeUrl() ?>">
+
+        <div class="form-group">
+            <label for="name"><?php echo $this->__('Name') ?></label>
+            <input id="name" type="text" name="name">
+        </div>
+
+        <div class="form-group">
+            <label for="email"><?php echo $this->__('Email') ?></label>
+            <input id="email" type="text" name="email">
+        </div>
+
+        <div id="missing-children" class="form-group"></div>
+
+        <input type="hidden" name="product_id" value="<?php echo $this->getProduct()->getId() ?>">
+
+        <div class="form-group">
+            <button id="subscribe-to-stock-notification" class="button btn" type="submit">
+                <div class="small progress"></div>
+                <?php echo $this->__('Notify Me') ?>
+            </button>
+        </div>
+
+    </form>
+
+</div>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout>
+    <catalog_product_view>
+        <reference name="product.info">
+            <block type="backinstock/cta" name="back.in.stock.cta" as="back_in_stock_cta" template="backinstock/cta.phtml"/>
+        </reference>
+    </catalog_product_view>
+
+    <default>
+        <reference name="after_body_start">
+            <block type="backinstock/modal" name="back.in.stock.modal" template="backinstock/modal.phtml"/>
+        </reference>
+    </default>
+
+</layout>
