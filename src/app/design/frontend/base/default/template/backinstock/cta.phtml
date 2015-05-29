@@ -58,7 +58,7 @@
     <script>
         document.observe('dom:loaded', function() {
             BackInStock.someTimeSoon(<?php echo json_encode($this->getOutOfStockLinks()) ?>);
-            BackInStock.controller().observe('click', function() {
+            BackInStock.controller().observe('click', function(event) {
                 var selectWrap = $('missing-children');
                 if (selectWrap.innerHTML.length == 0) {
                     selectWrap.insert(BackInStock.buildSelect());
@@ -76,7 +76,7 @@
                     },
                     onSuccess: function(response) {
                         BackInStock.button().update('<?php echo $this->__('Thank you') ?>');
-                        BackInStock.button().disable();
+//                        BackInStock.button().disable();
                         Event.fire('productAlertWasStored', response)
                     }
                 });
@@ -99,12 +99,13 @@
     <script>
         BackInStock.link().observe('click', function(event) {
             event.preventDefault();
+            BackInStock.link().update('<?php echo $this->__('Wait...') ?>');
             console.log($(this).readAttribute('data-url'));
             new Ajax.Request($(this).readAttribute('data-url'), {
                 method:'get',
                 onSuccess: function(response) {
                     console.log(response.responseText);
-                    BackInStock.link().update('You will be notified once this product is back in stock!');
+                    BackInStock.link().update(<?php echo $this->__('You will be notified once this product is back in stock!') ?>);
                     BackInStock.link().setStyle({
                         'pointer-events': 'none',
                         'cursor': 'default'

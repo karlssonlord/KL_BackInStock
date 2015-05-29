@@ -1,20 +1,16 @@
 <?php
 require_once Mage::getModuleDir('controllers', 'Mage_ProductAlert') . DS . 'AddController.php';
-class KL_BackInStock_NotificationController extends Mage_ProductAlert_AddController
+class KL_BackInStock_NotificationController extends Mage_Core_Controller_Front_Action
 {
     protected $validator;
 
     public function _construct()
     {
-        $this->validator = Mage::getModel('backinstock/validators_subscriptionRequest');
+        $this->validator = Mage::getModel('backinstock/validator_subscriptionRequest');
     }
 
     public function subscribeAction()
     {
-        if ($this->getRequest()->isGet()) {
-            return parent::stockAction();
-        }
-
         try
         {
             $this->validator->validate($this->getRequest());
