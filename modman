@@ -1,0 +1,4 @@
+app/etc/modules/*.xml                                       app/etc/modules/
+app/code/community/KL/*                                     app/code/community/KL/
+app/design/frontend/base/default/layout/backinstock.xml     app/design/frontend/base/default/layout/backinstock.xml
+app/design/frontend/base/default/template/backinstock/*     app/design/frontend/base/default/template/backinstock/
