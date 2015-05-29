@@ -76,7 +76,7 @@
                     },
                     onSuccess: function(response) {
                         BackInStock.button().update('<?php echo $this->__('Thank you') ?>');
-//                        BackInStock.button().disable();
+                        BackInStock.button().disable();
                         Event.fire('productAlertWasStored', response)
                     }
                 });
