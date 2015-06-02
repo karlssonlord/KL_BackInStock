@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class KL_BackInStock_Block_Cta extends Mage_Catalog_Block_Product_View
 {
@@ -108,7 +108,7 @@ class KL_BackInStock_Block_Cta extends Mage_Catalog_Block_Product_View
         $this->outOfStockLinks[] = array(
             'id' => $child->getId(),
             'link' => $this->generateStockNotificationLink($child),
-            'name' => $child->getName()
+            'name' => $child->getAttributeText('size')
         );
     }
 
