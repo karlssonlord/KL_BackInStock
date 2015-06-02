@@ -5,11 +5,16 @@ class KL_BackInStock_Model_Validator_SubscriptionRequest implements KL_BackInSto
     /**
      * @param Mage_Core_Controller_Request_Http $request
      * @throws KL_BackInStock_Model_Exceptions_AlreadySubscribed
+     * @throws KL_BackInStock_Model_Exceptions_IncompleteForm
      * @throws KL_BackInStock_Model_Exceptions_Unauthorized
-     * @return void
+     * @return mixed|void
      */
     public function validate(Mage_Core_Controller_Request_Http $request)
     {
+        if (!$request->getPost('email') && !$request->getPost('customer_id')) {
+            throw new KL_BackInStock_Model_Exceptions_IncompleteForm('Please supply a valid email address.');
+        }
+
         if (!Mage::getSingleton('customer/session')->isLoggedIn() && $request->getParam('customer_id')) {
             throw new KL_BackInStock_Model_Exceptions_Unauthorized('You are not authorized to make such request.');
         }

@@ -34,6 +34,10 @@
             this.sizes = data;
         },
 
+        errors: function() {
+            return $('back-in-stock-errors');
+        },
+
         buildSelect: function() {
             var select = document.createElement('select');
             select.setAttribute('id', 'children-out-of-stock');
@@ -69,6 +73,7 @@
             BackInStock.form().observe('submit', function (event) {
                 event.preventDefault();
                 BackInStock.button().update('<?php echo $this->__('Wait...') ?>');
+                BackInStock.errors().update('');
                 BackInStock.form().request({
                     onFailure: function(response) {
                         BackInStock.button().update('<?php echo $this->__('Try again?') ?>');
@@ -87,14 +92,42 @@
 <?php endif; ?>
 
 <?php if ($this->isSimple() && !$this->isSalable() && !Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+    <p><em><?php echo $this->__('This product is out of stock') ?></em></p>
+    <a id="back-stock-modal-controller"><?php echo $this->__('Notify me when this product is back in stock') ?></a>
 
-    <a id="back-stock-modal-controller"><?php echo $this->__('Notify me when this product is back in stock FOO') ?></a>
+    <script>
+        document.observe('dom:loaded', function() {
+            BackInStock.controller().observe('click', function(event) {
+                BackInStock.modal().toggle();
+            });
+
+            BackInStock.form().observe('submit', function (event) {
+                event.preventDefault();
+                BackInStock.button().update('<?php echo $this->__('Wait...') ?>');
+                BackInStock.errors().update('');
+                BackInStock.form().request({
+                    onFailure: function(response) {
+                        BackInStock.button().update('<?php echo $this->__('Try again?') ?>');
+                        BackInStock.errors().insert('<p class="error-message">' + response.responseText + '</p>')
+                        Event.fire('savingProductAlertFailed', response)
+                    },
+                    onSuccess: function(response) {
+                        BackInStock.button().update('<?php echo $this->__('Thank you') ?>');
+                        BackInStock.button().disable();
+                        Event.fire('productAlertWasStored', response)
+                    }
+                });
+            });
+        });
+    </script>
 
 <?php endif; ?>
 
 <?php if ($this->isSimple() && !$this->isSalable() && Mage::getSingleton('customer/session')->isLoggedIn()): ?>
 
-    <a data-url="<?php echo $this->generateStockNotificationLink($this->getProduct()) ?>" id="back-in-stock-subscribe"><?php echo $this->__('Notify me when this product is back in stock BAR') ?></a>
+    <a data-url="<?php echo $this->generateStockNotificationLink($this->getProduct()) ?>" id="back-in-stock-subscribe">
+        <?php echo $this->__('Notify me when this product is back in stock') ?>
+    </a>
 
     <script>
         BackInStock.link().observe('click', function(event) {

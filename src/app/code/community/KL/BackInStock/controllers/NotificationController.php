@@ -16,6 +16,12 @@ class KL_BackInStock_NotificationController extends Mage_Core_Controller_Front_A
             $this->validator->validate($this->getRequest());
             $this->createSubscription();
         }
+        catch (KL_BackInStock_Model_Exceptions_IncompleteForm $e)
+        {
+            $this->getResponse()->setHeader('Content-type', 'application/json', 400);
+            $this->getResponse()->setHeader('HTTP/1.0','400', true);
+            return $this->getResponse()->setBody($this->__($e->getMessage()));
+        }
         catch (KL_BackInStock_Model_Exceptions_AlreadySubscribed $e)
         {
             $this->getResponse()->setHeader('Content-type', 'application/json', 400);

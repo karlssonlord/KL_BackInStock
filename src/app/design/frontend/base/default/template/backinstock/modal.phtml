@@ -1,5 +1,5 @@
 
-<div id="back-in-stock-modal" style="display:none;">
+<div id="back-in-stock-modal" class="modal" style="display:none;">
 
     <form id="back-in-stock-form" method="POST" action="<?php echo $this->getSubscribeUrl() ?>">
 
@@ -23,6 +23,8 @@
                 <?php echo $this->__('Notify Me') ?>
             </button>
         </div>
+
+        <div id="back-in-stock-errors"></div>
 
     </form>
 
