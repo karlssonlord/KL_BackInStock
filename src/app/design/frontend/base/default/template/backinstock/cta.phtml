@@ -77,6 +77,7 @@
                 BackInStock.form().request({
                     onFailure: function(response) {
                         BackInStock.button().update('<?php echo $this->__('Try again?') ?>');
+                        BackInStock.errors().insert('<p class="error-message">' + response.responseText + '</p>')
                         Event.fire('savingProductAlertFailed', response)
                     },
                     onSuccess: function(response) {
@@ -147,6 +148,7 @@
                 },
                 onFailure: function(response) {
                     console.log(response.responseText);
+                    BackInStock.errors().insert('<p class="error-message">' + response.responseText + '</p>')
                     Event.fire('savingProductAlertFailed', response);
                 }
             });

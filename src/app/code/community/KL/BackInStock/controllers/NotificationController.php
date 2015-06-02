@@ -1,5 +1,5 @@
 <?php
-require_once Mage::getModuleDir('controllers', 'Mage_ProductAlert') . DS . 'AddController.php';
+
 class KL_BackInStock_NotificationController extends Mage_Core_Controller_Front_Action
 {
     protected $validator;

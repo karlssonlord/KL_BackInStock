@@ -11,7 +11,7 @@ class KL_BackInStock_Model_Validator_SubscriptionRequest implements KL_BackInSto
      */
     public function validate(Mage_Core_Controller_Request_Http $request)
     {
-        if (!$request->getPost('email') && !$request->getPost('customer_id')) {
+        if (!$request->getPost('email') && !$request->getPost('customer_id') || !$this->emailIsValid($request->getPost('email'))) {
             throw new KL_BackInStock_Model_Exceptions_IncompleteForm('Please supply a valid email address.');
         }
 
@@ -43,5 +43,10 @@ class KL_BackInStock_Model_Validator_SubscriptionRequest implements KL_BackInSto
                 return true;
             }
         }
+    }
+
+    protected function emailIsValid($email)
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 }
