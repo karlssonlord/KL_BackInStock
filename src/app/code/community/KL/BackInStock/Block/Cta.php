@@ -35,6 +35,7 @@ class KL_BackInStock_Block_Cta extends Mage_Catalog_Block_Product_View
     public function setSecureUrls()
     {
         $this->secureUrls = true;
+        return $this;
     }
 
     /**
@@ -107,7 +108,7 @@ class KL_BackInStock_Block_Cta extends Mage_Catalog_Block_Product_View
         return Mage::getUrl('backinstock/notification/subscribe', array(
             'product_id'    => $child->getId(),
             Mage_Core_Controller_Front_Action::PARAM_NAME_URL_ENCODED => Mage::helper('core/url')->getEncodedUrl(),
-            '_secure' => $secure
+            '_secure' => $secure ? : $this->secureUrls
         ));
     }
 
