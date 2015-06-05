@@ -32,14 +32,14 @@ class KL_BackInStock_Model_Validator_SubscriptionRequest implements KL_BackInSto
     {
         // Check the email column. This column is populated by non-logged-in customers
         foreach (Mage::getModel('productalert/stock')->getCollection() as $alert) {
-            if ($alert->getEmail() == $request->getParam('email')) {
+            if ($alert->getEmail() == $request->getParam('email') && $alert->getProductId() == $request->getParam('product_id')) {
                 return true;
             }
         }
 
         // In case logged in customer subscribe to alerts, we need to run through the customer collection too
         foreach (Mage::getModel('productalert/stock')->getCustomerCollection() as $customer) {
-            if ($customer->getEmail() == $request->getParam('email')) {
+            if ($customer->getEmail() == Mage::getSingleton('customer/session')->getCustomer()->getEmail() && $alert->getProductId() == $request->getParam('product_id')) {
                 return true;
             }
         }
