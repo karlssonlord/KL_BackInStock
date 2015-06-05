@@ -3,6 +3,11 @@
 class KL_BackInStock_Block_Cta extends Mage_Catalog_Block_Product_View
 {
     /**
+     * @var bool
+     */
+    protected $secureUrls = false;
+
+    /**
      * @var array
      */
     protected $outOfStockLinks = array();
@@ -22,6 +27,22 @@ class KL_BackInStock_Block_Cta extends Mage_Catalog_Block_Product_View
     public function getOutOfStockLinks()
     {
         return $this->outOfStockLinks;
+    }
+
+    /**
+     * Make urls secure
+     */
+    public function setSecureUrls()
+    {
+        $this->secureUrls = true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSecureUrls()
+    {
+        return $this->secureUrls;
     }
 
     /**
@@ -108,7 +129,7 @@ class KL_BackInStock_Block_Cta extends Mage_Catalog_Block_Product_View
         $child = $child->load($child->getId());
         $this->outOfStockLinks[] = array(
             'id' => $child->getId(),
-            'link' => $this->generateStockNotificationLink($child),
+            'link' => $this->generateStockNotificationLink($child, $this->secureUrls),
             'name' => $child->getAttributeText('size')
         );
     }
