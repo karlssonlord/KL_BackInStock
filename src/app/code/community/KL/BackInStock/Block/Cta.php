@@ -81,11 +81,12 @@ class KL_BackInStock_Block_Cta extends Mage_Catalog_Block_Product_View
      * @param Mage_Catalog_Model_Product $child
      * @return string
      */
-    public function generateStockNotificationLink(Mage_Catalog_Model_Product $child)
+    public function generateStockNotificationLink(Mage_Catalog_Model_Product $child, $secure = false)
     {
         return Mage::getUrl('backinstock/notification/subscribe', array(
             'product_id'    => $child->getId(),
-            Mage_Core_Controller_Front_Action::PARAM_NAME_URL_ENCODED => Mage::helper('core/url')->getEncodedUrl()
+            Mage_Core_Controller_Front_Action::PARAM_NAME_URL_ENCODED => Mage::helper('core/url')->getEncodedUrl(),
+            '_secure' => $secure
         ));
     }
 
