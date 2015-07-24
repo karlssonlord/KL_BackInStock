@@ -79,8 +79,21 @@ class KL_BackInStock_Block_Cta extends Mage_Catalog_Block_Product_View
      */
     public function isOutOfStock($product)
     {
-        return (int)Mage::getModel('cataloginventory/stock_item')
-            ->loadByProduct($product->getId())->getQty() < 1;
+        $stockItem = Mage::getModel('cataloginventory/stock_item')
+            ->loadByProduct($product->getId());
+
+        // Since we don't manage stock, it's always in stock!
+        if (!$stockItem->getManageStock()) {
+            return false;
+        }
+
+        // If we got more than 0 in stock, we're in stock!
+        if ((int)$stockItem->getQty() > 0) {
+            return false;
+        }
+
+        // Fallback, we're out of stock
+        return true;
     }
 
     /**
